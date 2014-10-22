@@ -28,11 +28,34 @@ var app = {
     bindEvents: function () {
         document.addEventListener('deviceready', this.onDeviceReady, false);
 
-        $('#listview').on('click', 'li', function () {
+        $('#listviewMainMenu').on('click', 'li', function () {
+            var selected_index = $(this).index();
+            if (selected_index > 0) {
+                var listIndex = "li." + selected_index;
+
+                var menuName = $('#listviewMainMenu').children(listIndex).text().trim();
+
+                alert(menuName); // id of clicked li by directly accessing DOMElement property
+
+                if (menuName === "Purusha Sukta")
+                    $.mobile.navigate("#purushaSukta");
+                else if (menuName === "Sri Sukta")
+                    $.mobile.navigate("#sriSukta");
+            }
+        });
+
+        $('#listviewPurusha').on('click', 'li', function () {
             var selected_index = $(this).index();
             var listIndex = "li." + selected_index;
-            alert($('#listview').children(listIndex).text()); // id of clicked li by directly accessing DOMElement property
-            $.mobile.navigate( "#bar" );
+            alert($('#listviewPurusha').children(listIndex).text()); // id of clicked li by directly accessing DOMElement property
+//            $.mobile.navigate( "#purushaSukta" );
+        });
+
+        $('#listviewSrisukta').on('click', 'li', function () {
+            var selected_index = $(this).index();
+            var listIndex = "li." + selected_index;
+            alert($('#listviewSrisukta').children(listIndex).text()); // id of clicked li by directly accessing DOMElement property
+//            $.mobile.navigate( "#purushaSukta" );
         });
     },
     // deviceready Event Handler

@@ -11,10 +11,4 @@
   -webkit-border-bottom-right-radius: inherit;
   border-bottom-right-radius: inherit;
 }
-.pageVertical .ui-btn-text{ 
-    white-space: normal !important; 
-}
 
-.pageVertical .ui-btn-inner{ 
-    white-space: normal !important; 
-}
