@@ -33,21 +33,15 @@
                     <ul id="listviewMainMenu" data-role="listview" data-inset="true">
                         <li data-role="list-divider">Suktas </li>
                         <li class="1"><a href="index.html">
-                                <h2>Introduction</h2>
-                                <p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
-                                <p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
+                                <h2><strong>Introduction</strong></h2>
                             </a>
                         </li>
                         <li class="2"><a href="index.html">
-                                <h2>Purusha Sukta</h2>
-                                <p><strong>Boston Conference Planning</strong></p>
-                                <p>In preparation for the upcoming conference in Boston, we need to start gathering a list of sponsors and speakers.</p>
+                                <h2><strong>Purusha Sukta</strong></h2>
                             </a>
                         </li>
                         <li class="3"><a href="index.html">
-                                <h2>Sri Sukta</h2>
-                                <p><strong>Re: Dinner Tonight</strong></p>
-                                <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
+                                <h2><strong>Sri Sukta</strong></h2>
                             </a>
                         </li>
                     </ul>
@@ -55,29 +49,49 @@
             </div>
         </div><!-- /page -->
 
-        <!-- Start of second page -->
-        <div data-role="page" id="bar">
+        <!-- Start of purushaSukta page -->
+        <div data-role="page" id="purushaSukta">
 
             <div data-role="header">
-                <h1>Bar</h1>
+                <h1>Purusha Sukta</h1>
             </div><!-- /header -->
 
-            <ul data-role="listview" data-filter="true" data-filter-placeholder="Search fruits..." data-inset="true">
-                <li><a href="#">Apple</a></li>
-                <li><a href="#">Banana</a></li>
-                <li><a href="#">Cherry</a></li>
-                <li><a href="#">Cranberry</a></li>
-                <li><a href="#">Grape</a></li>
-                <li><a href="#">Orange</a></li>
+            <ul id="listviewPurusha" data-role="listview" data-filter="true" data-filter-placeholder="Search shloka..." data-inset="true">
+                <li class="0"><a href="#">Shloka 1</a></li>
+                <li class="1"><a href="#">Shloka 2</a></li>
+                <li class="2"><a href="#">Shloka 3</a></li>
+                <li class="3"><a href="#">Shloka 4</a></li>
             </ul>
 
             <div role="main" class="ui-content">
-                <p>I'm the second in the source order so I'm hidden when the page loads. I'm just shown if a link that references my id is beeing clicked.</p>
-                <p><a href="#home">Back to home</a></p>
+                <p><a href="#home">Back to Main Menu</a></p>
             </div><!-- /content -->
 
             <div data-role="footer">
-                <h4>Page Footer</h4>
+                <h4>Hari Om !</h4>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+        
+        <!-- Start of sriSukta page -->
+        <div data-role="page" id="sriSukta">
+
+            <div data-role="header">
+                <h1>Sri Sukta</h1>
+            </div><!-- /header -->
+
+            <ul id="listviewSrisukta" data-role="listview" data-filter="true" data-filter-placeholder="Search shloka..." data-inset="true">
+                <li class="0"><a href="#">Shloka 1</a></li>
+                <li class="1"><a href="#">Shloka 2</a></li>
+                <li class="2"><a href="#">Shloka 3</a></li>
+                <li class="3"><a href="#">Shloka 4</a></li>
+            </ul>
+
+            <div role="main" class="ui-content">
+                <p><a href="#home">Back to Main Menu</a></p>
+            </div><!-- /content -->
+
+            <div data-role="footer">
+                <h4>Hari Om !</h4>
             </div><!-- /footer -->
         </div><!-- /page -->
 
