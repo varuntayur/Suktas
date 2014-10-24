@@ -4,43 +4,97 @@
         <title>Page Title</title>
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="UTF-8"/>
 
         <link rel="stylesheet" href="css/jquery.mobile-1.4.4.min.css" />
         <link rel="stylesheet" href="css/index.css" />
 
         <script src="js/libs/jquery/jquery-2.1.1.min.js"></script>
         <script src="js/libs/jquery/jquery.mobile-1.4.4.js"></script>
+        <script src="js/index.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                app.initialize();
+            });
+        </script>
 
     </head>
 
     <body>
+        <!-- Start of first page -->
+        <div data-role="page" id="home">
 
-        <div class="ui-corner-all custom-corners">
-             <div class="ui-bar ui-bar-a">
-                <h3>Om</h3>
-            </div>
-            <div class="ui-body ui-body-a">
+            <div class="ui-corner-all custom-corners">
+                <div class="ui-bar ui-bar-a">
+                    <h3>Om</h3>
+                </div>
+                <div class="ui-body ui-body-a">
 
-                <ul id="listview" data-role="listview" data-inset="true">
-                    <li data-role="list-divider">Suktas </li>
-                    <li><a href="index.html">
-                            <h2>Introduction</h2>
-                            <p><strong>You've been invited to a meeting at Filament Group in Boston, MA</strong></p>
-                            <p>Hey Stephen, if you're available at 10am tomorrow, we've got a meeting with the jQuery team.</p>
-                        </a></li>
-                    <li><a href="index.html">
-                            <h2>Purusha Sukta</h2>
-                            <p><strong>Boston Conference Planning</strong></p>
-                            <p>In preparation for the upcoming conference in Boston, we need to start gathering a list of sponsors and speakers.</p>
-                        </a></li>
-                    <li><a href="index.html">
-                            <h2>Sri Sukta</h2>
-                            <p><strong>Re: Dinner Tonight</strong></p>
-                            <p>Sure, let's plan on meeting at Highland Kitchen at 8:00 tonight. Can't wait!</p>
-                        </a></li>
-                </ul>
+                    <ul id="listviewMainMenu" data-role="listview" data-inset="true">
+                        <li data-role="list-divider">Suktas </li>
+                        <li class="1"><a href="index.html">
+                                <h2><strong>Introduction</strong></h2>
+                            </a>
+                        </li>
+                        <li class="2"><a href="index.html">
+                                <h2><strong>Purusha Sukta</strong></h2>
+                            </a>
+                        </li>
+                        <li class="3"><a href="index.html">
+                                <h2><strong>Sri Sukta</strong></h2>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
+        </div><!-- /page -->
+
+        <!-- Start of purushaSukta page -->
+        <div data-role="page" id="purushaSukta">
+
+            <div data-role="header">
+                <h1>Purusha Sukta</h1>
+            </div><!-- /header -->
+
+            <ul id="listviewPurusha" data-role="listview" data-filter="true" data-filter-placeholder="Search shloka..." data-inset="true">
+                <li class="0"><a href="#">Shloka 1</a></li>
+                <li class="1"><a href="#">Shloka 2</a></li>
+                <li class="2"><a href="#">Shloka 3</a></li>
+                <li class="3"><a href="#">Shloka 4</a></li>
+            </ul>
+
+            <div role="main" class="ui-content">
+                <p><a href="#home">Back to Main Menu</a></p>
+            </div><!-- /content -->
+
+            <div data-role="footer">
+                <h4>Hari Om !</h4>
+            </div><!-- /footer -->
+        </div><!-- /page -->
+        
+        <!-- Start of sriSukta page -->
+        <div data-role="page" id="sriSukta">
+
+            <div data-role="header">
+                <h1>Sri Sukta</h1>
+            </div><!-- /header -->
+
+            <ul id="listviewSrisukta" data-role="listview" data-filter="true" data-filter-placeholder="Search shloka..." data-inset="true">
+                <li class="0"><a href="#">Shloka 1</a></li>
+                <li class="1"><a href="#">Shloka 2</a></li>
+                <li class="2"><a href="#">Shloka 3</a></li>
+                <li class="3"><a href="#">Shloka 4</a></li>
+            </ul>
+
+            <div role="main" class="ui-content">
+                <p><a href="#home">Back to Main Menu</a></p>
+            </div><!-- /content -->
+
+            <div data-role="footer">
+                <h4>हरिः ॐ  !</h4>
+            </div><!-- /footer -->
+        </div><!-- /page -->
 
     </body>
 </html>

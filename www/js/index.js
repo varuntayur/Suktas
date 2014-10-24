@@ -57,6 +57,19 @@ var app = {
             alert($('#listviewSrisukta').children(listIndex).text()); // id of clicked li by directly accessing DOMElement property
 //            $.mobile.navigate( "#purushaSukta" );
         });
+
+
+        $.getJSON("data/purusha_eng.json", function (data) {
+            var items = [];
+            $.each(data, function (key, val) {
+                items.push("<li id='" + key + "'>" + val + "</li>");
+            });
+            console.log(items);
+//            $("<ul/>", {
+//                "class": "my-new-list",
+//                html: items.join("")
+//            }).appendTo("body");
+        });
     },
     // deviceready Event Handler
     //
