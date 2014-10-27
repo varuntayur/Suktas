@@ -1,21 +1,8 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
+
+this.secName2ShlokasEng = {};
+this.secName2ShlokasKan = {};
+this.secName2ShlokasSan = {};
+
 var app = {
     // Application Constructor
     initialize: function () {
@@ -37,8 +24,46 @@ var app = {
 
                 alert(menuName); // id of clicked li by directly accessing DOMElement property
 
-                if (menuName === "Purusha Sukta")
+                if (menuName === "Purusha Sukta") {
+
+                    var shlokaListEng = secName2ShlokasEng["Purusha Sukta"];
+                    var shlokaListKan = secName2ShlokasKan["Purusha Sukta"];
+                    var shlokaListSan = secName2ShlokasSan["Purusha Sukta"];
+
+                    for (var shlokaNum = 0; shlokaNum < shlokaListEng.length; shlokaNum++) {
+
+                        var shlokaEng = shlokaListEng[shlokaNum];
+                        var shlokaKan = shlokaListKan[shlokaNum];
+                        var shlokaSan = shlokaListSan[shlokaNum];
+
+                        var shlokaTextEng = shlokaEng["text"];
+                        var shlokaTextKan = shlokaKan["text"];
+                        var shlokaTextSan = shlokaSan["text"];
+                        
+                        var shlokaEngExp = shlokaEng["explanation"];
+                        var notesList = shlokaEngExp["notesList"];
+
+                        var shlokaContent = "<div data-role='collapsible'>";
+                        shlokaContent += "<h3>" + 'Shloka ' + shlokaEng["num"] + "</h3>";
+                        shlokaContent += "<p>" + shlokaTextEng.replace(/\n/g, '<br/>') + "</p>";
+                        shlokaContent += "<p>" + shlokaTextKan.replace(/\n/g, '<br/>') + "</p>";
+                        shlokaContent += "<p>" + shlokaTextSan.replace(/\n/g, '<br/>') + "</p>";
+
+                        for (var k = 0; k < notesList.length; k++) {
+                            var notes = notesList[k];
+
+                            var expTitle = notes["title"];
+                            var expText = notes["text"];
+
+                            shlokaContent += "<p><b>" + expTitle + "</b></p>";
+                            shlokaContent += "<p>" + expText.replace(/\n/g, '<br/>') + "</p>";
+
+                            $('#listviewPurusha').append(shlokaContent);
+                        }
+                    }
+                    $('[data-role="collapsible"]').parent().enhanceWithin();
                     $.mobile.navigate("#purushaSukta");
+                }
                 else if (menuName === "Sri Sukta")
                     $.mobile.navigate("#sriSukta");
             }
@@ -61,15 +86,113 @@ var app = {
 
         $.getJSON("data/purusha_eng.json", function (data) {
             var items = [];
-            $.each(data, function (key, val) {
-                items.push("<li id='" + key + "'>" + val + "</li>");
-            });
-            console.log(items);
-//            $("<ul/>", {
-//                "class": "my-new-list",
-//                html: items.join("")
-//            }).appendTo("body");
+
+            var sections = data["sections"];
+            console.log('No. of sections :' + sections.length);
+
+            for (var i = 0; i < sections.length; i++)
+            {
+                var section = sections[i];
+
+                var secName = section["name"];
+                var shlokaList = section["shlokaList"];
+
+                console.log('Section :' + secName);
+
+                app.printShlokaExplanation(shlokaList);
+
+                secName2ShlokasEng[secName] = shlokaList;
+            }
+
         });
+
+        $.getJSON("data/purusha_kan.json", function (data) {
+            var items = [];
+
+            var sections = data["sections"];
+            console.log('No. of sections :' + sections.length);
+
+            for (var i = 0; i < sections.length; i++)
+            {
+                var section = sections[i];
+
+                var secName = section["name"];
+                var shlokaList = section["shlokaList"];
+
+                console.log('Section :' + secName);
+
+                app.printShlokaExplanation(shlokaList);
+
+                secName2ShlokasKan[secName] = shlokaList;
+            }
+
+        });
+
+        $.getJSON("data/purusha_san.json", function (data) {
+            var items = [];
+
+            var sections = data["sections"];
+            console.log('No. of sections :' + sections.length);
+
+            for (var i = 0; i < sections.length; i++)
+            {
+                var section = sections[i];
+
+                var secName = section["name"];
+                var shlokaList = section["shlokaList"];
+
+                console.log('Section :' + secName);
+
+                app.printShlokaExplanation(shlokaList);
+
+                secName2ShlokasSan[secName] = shlokaList;
+            }
+
+        });
+    },
+    printShlokaExplanation: function (shlokaList) {
+        for (var j = 0; j < shlokaList.length; j++) {
+            var shloka = shlokaList[j];
+
+            var shlokaText = shloka["text"];
+            var shlokaExp = shloka["explanation"];
+
+            console.log('Shloka Text :' + shlokaText);
+
+            if (shlokaExp === undefined)
+                continue;
+
+            var notesList = shlokaExp["notesList"];
+
+            for (var k = 0; k < notesList.length; k++) {
+                var notes = notesList[k];
+                console.log('Shloka exp Title :' + notes["title"]);
+                console.log('Shloka exp Text :' + notes["text"]);
+            }
+        }
+    },
+    getShloka: function (section, shlokaNum) {
+
+        var shlokaList = secName2Shlokas[section];
+
+        var shloka = shlokaList[shlokaNum];
+
+        var shlokaText = shloka["text"];
+        var shlokaExp = shloka["explanation"];
+        var notesList = shlokaExp["notesList"];
+
+        console.log("-----------" + shlokaText + "-----------");
+
+        for (var k = 0; k < notesList.length; k++) {
+            var notes = notesList[k];
+
+            var expTitle = notes["title"];
+            var expText = notes["text"];
+
+            console.log('--' + expTitle + '--');
+            console.log(expText);
+            console.log('---------------------');
+        }
     },
     // deviceready Event Handler
     //
