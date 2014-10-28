@@ -20,7 +20,7 @@ var app = {
             if (selected_index > 0) {
                 var listIndex = "li." + selected_index;
                 var menuName = $('#listviewMainMenu').children(listIndex).text().trim();
-                alert(menuName); // id of clicked li by directly accessing DOMElement property
+//                alert(menuName); // id of clicked li by directly accessing DOMElement property
 
                 if (menuName === "Purusha Sukta") {
 
@@ -121,6 +121,20 @@ var app = {
             }
 
         });
+
+        $('#collapser').on('click', function () {
+            $('[data-role="collapsible"]').each(function () {
+                var coll = $(this);
+                coll.collapsible({collapsed: true});
+            });
+        });
+        
+        $('#expander').on('click', function () {
+            $('[data-role="collapsible"]').each(function () {
+                var coll = $(this);
+                coll.collapsible({collapsed: false});
+            });
+        });
     },
     printShlokaExplanation: function (shlokaList) {
         for (var j = 0; j < shlokaList.length; j++) {
@@ -178,7 +192,6 @@ var app = {
 function playAudio(src) {
 
     var path = window.location.pathname;
-//                var path = '/android_asset/www/index.html'; //delete this line! test only
     path = path.substr(path, path.length - 10);
 
     // Create Media object from src
