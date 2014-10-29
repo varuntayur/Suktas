@@ -7,7 +7,55 @@ this.my_media;
 var app = {
     // Application Constructor
     initialize: function () {
+        loading('show');
+        $.getJSON("data/purusha_eng.json", function (data) {
+            var sections = data["sections"];
+            console.log('No. of sections :' + sections.length);
+            for (var i = 0; i < sections.length; i++)
+            {
+                var section = sections[i];
+                var secName = section["name"];
+                var shlokaList = section["shlokaList"];
+                console.log('Section :' + secName);
+//                app.printShlokaExplanation(shlokaList);
+                secName2ShlokasEng[secName] = shlokaList;
+            }
+
+        });
+        $.getJSON("data/purusha_kan.json", function (data) {
+            var items = [];
+            var sections = data["sections"];
+            console.log('No. of sections :' + sections.length);
+            for (var i = 0; i < sections.length; i++)
+            {
+                var section = sections[i];
+                var secName = section["name"];
+                var shlokaList = section["shlokaList"];
+                console.log('Section :' + secName);
+//                app.printShlokaExplanation(shlokaList);
+                secName2ShlokasKan[secName] = shlokaList;
+            }
+
+        });
+        $.getJSON("data/purusha_san.json", function (data) {
+            var items = [];
+            var sections = data["sections"];
+            console.log('No. of sections :' + sections.length);
+            for (var i = 0; i < sections.length; i++)
+            {
+                var section = sections[i];
+                var secName = section["name"];
+                var shlokaList = section["shlokaList"];
+                console.log('Section :' + secName);
+//                app.printShlokaExplanation(shlokaList);
+                secName2ShlokasSan[secName] = shlokaList;
+            }
+
+        });
+
         this.bindEvents();
+
+        loading('hide');
     },
     // Bind Event Listeners
     //
@@ -15,9 +63,13 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function () {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+
         $('#listviewMainMenu').on('click', 'li', function () {
             var selected_index = $(this).index();
             if (selected_index > 0) {
+
+                loading('show');
+
                 var listIndex = "li." + selected_index;
                 var menuName = $('#listviewMainMenu').children(listIndex).text().trim();
 //                alert(menuName); // id of clicked li by directly accessing DOMElement property
@@ -57,8 +109,11 @@ var app = {
                             $('#listviewPurusha').append(shlokaContent);
                         }
                     }
+                    $('#listviewPurusha').trigger('create');
                     $('[data-role="collapsible"]').parent().enhanceWithin();
                     $.mobile.navigate("#purushaSukta");
+                    loading('hide');
+
                 }
                 else if (menuName === "Sri Sukta")
                     $.mobile.navigate("#sriSukta");
@@ -76,51 +131,6 @@ var app = {
             alert($('#listviewSrisukta').children(listIndex).text()); // id of clicked li by directly accessing DOMElement property
 //            $.mobile.navigate( "#purushaSukta" );
         });
-        $.getJSON("data/purusha_eng.json", function (data) {
-            var items = [];
-            var sections = data["sections"];
-            console.log('No. of sections :' + sections.length);
-            for (var i = 0; i < sections.length; i++)
-            {
-                var section = sections[i];
-                var secName = section["name"];
-                var shlokaList = section["shlokaList"];
-                console.log('Section :' + secName);
-                app.printShlokaExplanation(shlokaList);
-                secName2ShlokasEng[secName] = shlokaList;
-            }
-
-        });
-        $.getJSON("data/purusha_kan.json", function (data) {
-            var items = [];
-            var sections = data["sections"];
-            console.log('No. of sections :' + sections.length);
-            for (var i = 0; i < sections.length; i++)
-            {
-                var section = sections[i];
-                var secName = section["name"];
-                var shlokaList = section["shlokaList"];
-                console.log('Section :' + secName);
-                app.printShlokaExplanation(shlokaList);
-                secName2ShlokasKan[secName] = shlokaList;
-            }
-
-        });
-        $.getJSON("data/purusha_san.json", function (data) {
-            var items = [];
-            var sections = data["sections"];
-            console.log('No. of sections :' + sections.length);
-            for (var i = 0; i < sections.length; i++)
-            {
-                var section = sections[i];
-                var secName = section["name"];
-                var shlokaList = section["shlokaList"];
-                console.log('Section :' + secName);
-                app.printShlokaExplanation(shlokaList);
-                secName2ShlokasSan[secName] = shlokaList;
-            }
-
-        });
 
         $('#collapser').on('click', function () {
             $('[data-role="collapsible"]').each(function () {
@@ -128,7 +138,7 @@ var app = {
                 coll.collapsible({collapsed: true});
             });
         });
-        
+
         $('#expander').on('click', function () {
             $('[data-role="collapsible"]').each(function () {
                 var coll = $(this);
@@ -187,6 +197,11 @@ var app = {
     }
 };
 
+function loading(showOrHide) {
+    setTimeout(function () {
+        $.mobile.loading(showOrHide);
+    }, 1);
+}
 // Play audio
 //
 function playAudio(src) {
