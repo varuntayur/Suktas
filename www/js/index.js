@@ -106,6 +106,7 @@ var app = {
                             var expText = notes["text"];
                             shlokaContent += "<p><b>" + expTitle + "</b></p>";
                             shlokaContent += "<p>" + expText.replace(/\n/g, '<br/>') + "</p>";
+                            shlokaContent += "<a href='#' onclick='$.mobile.silentScroll(0)'>Back To Top</a>";
                             $('#listviewPurusha').append(shlokaContent);
                         }
                     }
@@ -145,6 +146,7 @@ var app = {
                 coll.collapsible({collapsed: false});
             });
         });
+
     },
     printShlokaExplanation: function (shlokaList) {
         for (var j = 0; j < shlokaList.length; j++) {

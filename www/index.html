@@ -3,7 +3,7 @@
     <head>
         <title>Page Title</title>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1,minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi">
         <meta charset="UTF-8"/>
 
         <link rel="stylesheet" href="css/jquery.mobile-1.4.4.min.css" />
@@ -56,9 +56,14 @@
 
             <div data-role="header" data-position="fixed">
                 <h1>Purusha Sukta</h1>
-                <div class="ui-btn-right ui-mini">
-                    <a id="collapser" class="headerButton ui-mini" href="#" data-role="button">Collapse</a>
-                    <a id="expander" class="headerButton ui-mini" href="#" data-role="button">Expand</a>
+                <a href="#popupMenu" data-rel="popup" data-role="button" data-inline="true" data-transition="slideup" data-icon="gear" data-theme="e" class="ui-btn-right">View Actions..</a>
+                <div data-role="popup" id="popupMenu" data-theme="d">
+                    <ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="d">
+                        <li data-role="divider" data-theme="e">Choose an action</li>
+                        <li><a id="collapser" class="headerButton" href="#" data-role="button">Collapse All</a></li>
+                        <li><a id="expander" class="headerButton" href="#" data-role="button">Expand All</a></li>                       
+                        <li><a href="#home" data-role="button" data-icon="arrow-u">Back</a></li>
+                    </ul>
                 </div>
             </div><!-- /header -->
 
@@ -68,7 +73,7 @@
             <div role="main" class="ui-content">               
             </div><!-- /content -->
 
-            <div data-role="footer">
+            <div data-role="footer"  class="ui-bar">
                 <h4>हरिः ॐ</h4>
             </div><!-- /footer -->
         </div><!-- /page -->
@@ -78,9 +83,13 @@
 
             <div data-role="header" data-position="fixed">
                 <h1>Sri Sukta</h1>
-                <div class="ui-btn-right">
-                    <a id="collapser" class="headerButton" href="#" data-role="button">Collapse</a>
-                    <a id="expander" class="headerButton" href="#" data-role="button">Expand</a>
+                <a href="#popupMenu" data-rel="popup" data-role="button" data-inline="true" data-transition="slideup" data-icon="gear" data-theme="e" class="ui-btn-right">Actions...</a>
+                <div data-role="popup" id="popupMenu" data-theme="d">
+                    <ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="d">
+                        <li data-role="divider" data-theme="e">Choose an action</li>
+                        <li><a id="collapser" class="headerButton" href="#" data-role="button">Collapse All</a></li>
+                        <li><a id="expander" class="headerButton" href="#" data-role="button">Expand All</a></li>                       
+                    </ul>
                 </div>
             </div><!-- /header -->
 
