@@ -91,10 +91,8 @@ var app = {
                         var notesList = shlokaEngExp["notesList"];
                         var shlokaContent = "<div data-role='collapsible'>";
                         shlokaContent += "<fieldset class='ui-grid-e center'>";
-                        shlokaContent += "<div class='ui-block-a'><button class='ui-shadow ui-btn ui-corner-all ui-mini' >Pause</button></div>";
-                        shlokaContent += "<div class='ui-block-b'><button class='ui-shadow ui-btn ui-corner-all ui-mini'>Stop</button></div>";
-//                        shlokaContent += "<div class='ui-block-c'><button class='ui-shadow ui-btn ui-corner-all ui-mini' onclick='playAudio('stotra_1_1.mp3');'>Play</button></div>";
-                        shlokaContent += "<div class='ui-block-c'><button class='ui-shadow ui-btn ui-corner-all ui-mini' onclick=\"playAudio('stotra_1_1.mp3')\">Play</button></div>";
+                        shlokaContent += "<div class='ui-block-b'><button class='ui-btn ui-icon-delete ui-btn-icon-left'>Stop</button></div>";
+                        shlokaContent += "<div class='ui-block-c'><button class='ui-btn ui-icon-audio ui-btn-icon-left' onclick=\"playAudio('stotra_1_1.mp3')\">Play</button></div>";
                         shlokaContent += "</fieldset>";
                         shlokaContent += "<h3>" + 'Shloka ' + shlokaEng["num"] + "</h3>";
                         shlokaContent += "<p>" + shlokaTextEng.replace(/\n/g, '<br/>') + "</p>";
