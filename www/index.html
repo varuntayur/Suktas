@@ -27,12 +27,12 @@
         <div data-role="page" id="home">
 
             <div class="ui-corner-all custom-corners">
-                <div class="ui-bar ui-bar-a">
-                    <h3>Om</h3>
+                <div data-role="header" class="ui-bar ui-bar-a" data-theme="b">
+                    <h3>Suktas</h3>
                 </div>
                 <div class="ui-body ui-body-a">
 
-                    <ul id="listviewMainMenu" data-role="listview" data-inset="true">
+                    <ul id="listviewMainMenu" data-role="listview" data-inset="true" data-theme="b">
                         <li data-role="list-divider">Suktas </li>
                         <li class="1"><a href="index.html">
                                 <h2><strong>Introduction</strong></h2>
@@ -49,58 +49,60 @@
                     </ul>
                 </div>
             </div>
+
+            <div data-role="footer" class="ui-bar ui-bar-a" data-theme="b">
+                <h3>ॐ</h3>
+            </div>
         </div><!-- /page -->
 
         <!-- Start of purushaSukta page -->
         <div data-role="page" id="purushaSukta">
 
-            <div data-role="header" data-position="fixed">
+            <div data-role="header" data-position="fixed" data-theme="b">
                 <h1>Purusha Sukta</h1>
-                <a href="#popupMenu" data-rel="popup" data-role="button" data-inline="true" data-transition="slideup" data-icon="gear" data-theme="e" class="ui-btn-right">Actions..</a>
-                <div data-role="popup" id="popupMenu" data-theme="d">
+                <a href="#popupMenuPuru" data-rel="popup" data-role="button" data-inline="true" data-transition="slideup" data-icon="gear" data-theme="e" class="ui-btn-right"></a>
+                <div data-role="popup" id="popupMenuPuru" data-theme="d">
                     <ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="d">
                         <li data-role="divider" data-theme="e">Choose an action</li>
-                        <li><a id="collapser" class="headerButton" href="#" data-role="button">Collapse All</a></li>
-                        <li><a id="expander" class="headerButton" href="#" data-role="button">Expand All</a></li>                       
+                        <li><a id="collapserPuru" class="headerButton" href="#" data-role="button">Collapse All</a></li>
+                        <li><a id="expanderPuru" class="headerButton" href="#" data-role="button">Expand All</a></li>                       
                         <li><a href="#home" data-role="button" data-icon="arrow-u">Back</a></li>
                     </ul>
                 </div>
             </div><!-- /header -->
 
-            <div id="listviewPurusha">               
-            </div>
-
-            <div role="main" class="ui-content">               
+            <div role="main" class="ui-content">    
+                <div id="listviewPurusha">               
+                </div>
             </div><!-- /content -->
 
-            <div data-role="footer"  class="ui-bar">
+            <div data-role="footer"  class="ui-bar" data-theme="b">
                 <h4>हरिः ॐ</h4>
             </div><!-- /footer -->
         </div><!-- /page -->
 
         <!-- Start of sriSukta page -->
-        <div data-role="page" id="sriSukta">
+        <div data-role="page" id="sriSukta" >
 
-            <div data-role="header" data-position="fixed">
+            <div data-role="header" data-position="fixed" data-theme="b">
                 <h1>Sri Sukta</h1>
-                <a href="#popupMenu" data-rel="popup" data-role="button" data-inline="true" data-transition="slideup" data-icon="gear" data-theme="e" class="ui-btn-right">Actions...</a>
-                <div data-role="popup" id="popupMenu" data-theme="d">
+                <a href="#popupMenuSri" data-rel="popup" data-role="button" data-inline="true" data-transition="slideup" data-icon="gear" data-theme="e" class="ui-btn-right"></a>
+                <div data-role="popup" id="popupMenuSri" data-theme="d">
                     <ul data-role="listview" data-inset="true" style="min-width:210px;" data-theme="d">
                         <li data-role="divider" data-theme="e">Choose an action</li>
-                        <li><a id="collapser" class="headerButton" href="#" data-role="button">Collapse All</a></li>
-                        <li><a id="expander" class="headerButton" href="#" data-role="button">Expand All</a></li>   
+                        <li><a id="collapserSri" class="headerButton" href="#" data-role="button">Collapse All</a></li>
+                        <li><a id="expanderSri" class="headerButton" href="#" data-role="button">Expand All</a></li>   
                         <li><a href="#home" data-role="button" data-icon="arrow-u">Back</a></li>
                     </ul>
                 </div>
             </div><!-- /header -->
 
-            <div id="listviewSrisukta" >
-            </div>
-
-            <div role="main" class="ui-content">                
+            <div role="main" class="ui-content">    
+                <div id="listviewSrisukta" >
+                </div>
             </div><!-- /content -->
 
-            <div data-role="footer">
+            <div data-role="footer" class="ui-bar" data-theme="b">
                 <h4>हरिः ॐ</h4>
             </div><!-- /footer -->
         </div><!-- /page -->
