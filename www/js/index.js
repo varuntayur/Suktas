@@ -309,8 +309,13 @@ var app = {
 
             shlokaContent += "<h3>" + 'Shloka ' + (shlokaEng["num"] === '0' ? "Dhyanam" : shlokaEng["num"]) + "</h3>";
             shlokaContent += "<p>" + shlokaTextEng.replace(/\n/g, '<br/>') + "</p>";
-            shlokaContent += "<p>" + shlokaTextKan.replace(/\n/g, '<br/>') + "</p>";
-            shlokaContent += "<p>" + shlokaTextSan.replace(/\n/g, '<br/>') + "</p>";
+            
+            if (localStorage.languageSelected === 'kannada')
+                shlokaContent += "<p>" + shlokaTextKan.replace(/\n/g, '<br/>') + "</p>";
+
+            if (localStorage.languageSelected === 'sanskrit')
+                shlokaContent += "<p>" + shlokaTextSan.replace(/\n/g, '<br/>') + "</p>";
+            
             shlokaContent += "<a href='#' onclick='$.mobile.silentScroll(0)'>Back To Top</a>";
 
             shlokaContent += "</p>";
@@ -338,8 +343,13 @@ var app = {
             shlokaContent += "</fieldset>";
             shlokaContent += "<h3>" + 'Shloka ' + (shlokaEng["num"] === '0' ? "Dhyanam" : shlokaEng["num"]) + "</h3>";
             shlokaContent += "<p>" + shlokaTextEng.replace(/\n/g, '<br/>') + "</p>";
-            shlokaContent += "<p>" + shlokaTextKan.replace(/\n/g, '<br/>') + "</p>";
-            shlokaContent += "<p>" + shlokaTextSan.replace(/\n/g, '<br/>') + "</p>";
+            
+            if (localStorage.languageSelected === 'kannada')
+                shlokaContent += "<p>" + shlokaTextKan.replace(/\n/g, '<br/>') + "</p>";
+
+            if (localStorage.languageSelected === 'sanskrit')
+                shlokaContent += "<p>" + shlokaTextSan.replace(/\n/g, '<br/>') + "</p>";
+            
             for (var k = 0; k < notesList.length; k++) {
                 var notes = notesList[k];
                 var expTitle = notes["title"];
