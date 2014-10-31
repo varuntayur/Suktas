@@ -23,7 +23,6 @@ var app = {
                 var secName = section["name"];
                 var shlokaList = section["shlokaList"];
                 console.log('Section :' + secName);
-//                app.printShlokaExplanation(shlokaList);
                 puruSecName2ShlokasEng[secName] = shlokaList;
             }
 
@@ -38,7 +37,6 @@ var app = {
                 var secName = section["name"];
                 var shlokaList = section["shlokaList"];
                 console.log('Section :' + secName);
-//                app.printShlokaExplanation(shlokaList);
                 puruSecName2ShlokasKan[secName] = shlokaList;
             }
 
@@ -53,7 +51,6 @@ var app = {
                 var secName = section["name"];
                 var shlokaList = section["shlokaList"];
                 console.log('Section :' + secName);
-//                app.printShlokaExplanation(shlokaList);
                 puruSecName2ShlokasSan[secName] = shlokaList;
             }
 
@@ -68,7 +65,6 @@ var app = {
                 var secName = section["name"];
                 var shlokaList = section["shlokaList"];
                 console.log('Section :' + secName);
-//                app.printShlokaExplanation(shlokaList);
                 sriSecName2ShlokasEng[secName] = shlokaList;
             }
 
@@ -83,7 +79,6 @@ var app = {
                 var secName = section["name"];
                 var shlokaList = section["shlokaList"];
                 console.log('Section :' + secName);
-//                app.printShlokaExplanation(shlokaList);
                 sriSecName2ShlokasKan[secName] = shlokaList;
             }
 
@@ -98,7 +93,6 @@ var app = {
                 var secName = section["name"];
                 var shlokaList = section["shlokaList"];
                 console.log('Section :' + secName);
-//                app.printShlokaExplanation(shlokaList);
                 sriSecName2ShlokasSan[secName] = shlokaList;
             }
 
@@ -123,19 +117,26 @@ var app = {
 
                 var listIndex = "li." + selected_index;
                 var menuName = $('#listviewMainMenu').children(listIndex).text().trim();
-//                alert(menuName); // id of clicked li by directly accessing DOMElement property
 
                 if (menuName === "Purusha Sukta") {
                     $.mobile.navigate("#purushaSukta");
                     var parentElementDiv = '#listviewPurusha';
-                    if (purushaSuktaCached === null) {
-                        console.log("building the contents");
-                        app.buildPurushaSuktas(parentElementDiv);
+
+                    // shlokas to be displayed in one page
+                    if (localStorage.learningMode === 'off') {
+                        console.log("building the contents with learning mode off");
+                        app.buildPurushaSuktasInSinglePage(parentElementDiv);
                     }
                     else {
-                        console.log("loading cached contents");
-                        $(parentElementDiv).append(purushaSuktaCached);
-                        $('[data-role="collapsible"]').parent().enhanceWithin();
+                        if (purushaSuktaCached === null) {
+                            console.log("building the contents");
+                            app.buildPurushaSuktas(parentElementDiv, 'on');
+                        }
+                        else {
+                            console.log("loading cached contents");
+                            $(parentElementDiv).append(purushaSuktaCached);
+                            $('[data-role="collapsible"]').parent().enhanceWithin();
+                        }
                     }
                     loading('hide');
                 }
@@ -143,14 +144,23 @@ var app = {
 
                     $.mobile.navigate("#sriSukta");
                     var parentElementDiv = '#listviewSrisukta';
-                    if (sriSuktaCached === null) {
-                        console.log("sri-sukta : building the contents");
-                        app.buildSriSuktas(parentElementDiv);
+
+
+                    // shlokas to be displayed in one page
+                    if (localStorage.learningMode === 'off') {
+                        console.log("building the contents with learning mode off");
+                        app.buildSriSuktasInSinglePage(parentElementDiv);
                     }
                     else {
-                        console.log("loading cached contents for srisukta");
-                        $(parentElementDiv).append(sriSuktaCached);
-                        $('[data-role="collapsible"]').parent().enhanceWithin();
+                        if (sriSuktaCached === null) {
+                            console.log("sri-sukta : building the contents");
+                            app.buildSriSuktas(parentElementDiv);
+                        }
+                        else {
+                            console.log("loading cached contents for srisukta");
+                            $(parentElementDiv).append(sriSuktaCached);
+                            $('[data-role="collapsible"]').parent().enhanceWithin();
+                        }
                     }
                     loading('hide');
                 }
@@ -193,6 +203,12 @@ var app = {
             console.log('Language:' + localStorage.languageSelected);
             console.log('Learning Mode:' + localStorage.learningMode);
             console.log('----');
+
+            purushaSuktaCached = null;
+            sriSuktaCached = null;
+
+            $("#listviewPurusha").empty();
+            $("#listviewSrisukta").empty();
         });
 
         $("#popupSettings").bind({
@@ -222,6 +238,15 @@ var app = {
         purushaSuktaCached = app.buildSuktaContent(shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
 
     },
+    buildPurushaSuktasInSinglePage: function (parentElementDiv) {
+
+        var shlokaListEng = puruSecName2ShlokasEng["Purusha Sukta"];
+        var shlokaListKan = puruSecName2ShlokasKan["Purusha Sukta"];
+        var shlokaListSan = puruSecName2ShlokasSan["Purusha Sukta"];
+
+        purushaSuktaCached = app.buildSuktaContentInOnePage(shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
+
+    },
     buildSriSuktas: function (parentElementDiv) {
 
         var shlokaListEng = sriSecName2ShlokasEng["Sri Sukta"];
@@ -241,6 +266,58 @@ var app = {
 
         sriSuktaCached += app.buildSuktaContent(shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
 
+    },
+    buildSriSuktasInSinglePage: function (parentElementDiv) {
+
+        var shlokaListEng = sriSecName2ShlokasEng["Sri Sukta"];
+        var shlokaListKan = sriSecName2ShlokasKan["Sri Sukta"];
+        var shlokaListSan = sriSecName2ShlokasSan["Sri Sukta"];
+
+        sriSuktaCached = app.buildSuktaContentInOnePage(shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
+
+        var headerSection = "<div data-role='header'><h1>Phala Shruthi</h1></div>";
+        $(parentElementDiv).append(headerSection);
+        sriSuktaCached += headerSection;
+
+        var shlokaListEng = sriSecName2ShlokasEng["Sri Sukta - Phala Shruthi"];
+        var shlokaListKan = sriSecName2ShlokasKan["Sri Sukta - Phala Shruthi"];
+        var shlokaListSan = sriSecName2ShlokasSan["Sri Sukta - Phala Shruthi"];
+
+        sriSuktaCached += app.buildSuktaContentInOnePage(shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
+
+    },
+    buildSuktaContentInOnePage: function (engList, sanList, kanList, parentElementDiv) {
+
+        var shlokaContentPrelude = "<fieldset class='ui-grid-e center'>";
+        shlokaContentPrelude += "<div class='ui-block-b'><button class='ui-btn ui-icon-delete ui-btn-icon-left'>Stop</button></div>";
+        shlokaContentPrelude += "<div class='ui-block-c'><button class='ui-btn ui-icon-audio ui-btn-icon-left' onclick=\"playAudio('stotra_1_1.mp3')\">Play</button></div>";
+        shlokaContentPrelude += "</fieldset>";
+
+        $(parentElementDiv).append(shlokaContentPrelude);
+
+        for (var shlokaNum = 0; shlokaNum < engList.length; shlokaNum++) {
+
+            var shlokaEng = engList[shlokaNum];
+            var shlokaKan = kanList[shlokaNum];
+            var shlokaSan = sanList[shlokaNum];
+
+            var shlokaTextEng = shlokaEng["text"];
+            var shlokaTextKan = shlokaKan["text"];
+            var shlokaTextSan = shlokaSan["text"];
+
+            var shlokaContent = "<p>";
+
+            shlokaContent += "<h3>" + 'Shloka ' + (shlokaEng["num"] === '0' ? "Dhyanam" : shlokaEng["num"]) + "</h3>";
+            shlokaContent += "<p>" + shlokaTextEng.replace(/\n/g, '<br/>') + "</p>";
+            shlokaContent += "<p>" + shlokaTextKan.replace(/\n/g, '<br/>') + "</p>";
+            shlokaContent += "<p>" + shlokaTextSan.replace(/\n/g, '<br/>') + "</p>";
+            shlokaContent += "<a href='#' onclick='$.mobile.silentScroll(0)'>Back To Top</a>";
+
+            shlokaContent += "</p>";
+
+            $(parentElementDiv).append(shlokaContent);
+        }
+        return shlokaContentPrelude + shlokaContent;
     },
     buildSuktaContent: function (engList, sanList, kanList, parentElementDiv) {
 
