@@ -98,6 +98,17 @@ var app = {
 
         });
 
+        if (localStorage.languageSelected === undefined) {
+
+            localStorage.languageSelected = "sanskrit";
+            console.log('setting the default language to sanskrit');
+        }
+
+        if (localStorage.learningMode === undefined) {
+            console.log('setting the default learning mode to on');
+            localStorage.learningMode = "on";
+        }
+
         this.bindEvents();
 
         loading('hide');
@@ -122,21 +133,21 @@ var app = {
                     $.mobile.navigate("#purushaSukta");
                     var parentElementDiv = '#listviewPurusha';
 
+                    if (purushaSuktaCached !== null) {
+                        console.log("purusha-sukta, loading cached contents");
+                        $(parentElementDiv).append(purushaSuktaCached);
+                        $('[data-role="collapsible"]').parent().enhanceWithin();
+                        return;
+                    }
+
                     // shlokas to be displayed in one page
                     if (localStorage.learningMode === 'off') {
-                        console.log("building the contents with learning mode off");
+                        console.log("purusha-sukta, building the contents with learning mode off");
                         app.buildPurushaSuktasInSinglePage(parentElementDiv);
                     }
                     else {
-                        if (purushaSuktaCached === null) {
-                            console.log("building the contents");
-                            app.buildPurushaSuktas(parentElementDiv, 'on');
-                        }
-                        else {
-                            console.log("loading cached contents");
-                            $(parentElementDiv).append(purushaSuktaCached);
-                            $('[data-role="collapsible"]').parent().enhanceWithin();
-                        }
+                        console.log("purusha-sukta, building the contents");
+                        app.buildPurushaSuktas(parentElementDiv, 'on');
                     }
                     loading('hide');
                 }
@@ -145,26 +156,27 @@ var app = {
                     $.mobile.navigate("#sriSukta");
                     var parentElementDiv = '#listviewSrisukta';
 
+                    if (sriSuktaCached !== null) {
+                        console.log("loading cached contents for srisukta");
+                        $(parentElementDiv).append(sriSuktaCached);
+                        $('[data-role="collapsible"]').parent().enhanceWithin();
+                        return;
+                    }
 
                     // shlokas to be displayed in one page
                     if (localStorage.learningMode === 'off') {
-                        console.log("building the contents with learning mode off");
+                        console.log("sri-sukta, building the contents with learning mode off");
                         app.buildSriSuktasInSinglePage(parentElementDiv);
                     }
                     else {
-                        if (sriSuktaCached === null) {
-                            console.log("sri-sukta : building the contents");
-                            app.buildSriSuktas(parentElementDiv);
-                        }
-                        else {
-                            console.log("loading cached contents for srisukta");
-                            $(parentElementDiv).append(sriSuktaCached);
-                            $('[data-role="collapsible"]').parent().enhanceWithin();
-                        }
+                        console.log("sri-sukta : building the contents");
+                        app.buildSriSuktas(parentElementDiv);
                     }
-                    loading('hide');
+
                 }
+                loading('hide');
             }
+
         });
 
         $('#collapserPuru').on('click', function () {
@@ -215,7 +227,7 @@ var app = {
             popupbeforeposition: function (event, ui) {
 
                 if (localStorage.languageSelected !== null) {
-                    $("input[name=radio-choice-lang]").val([localStorage.languageSelected]);
+                    $("input[name=radio-choice-lang][value=" + localStorage.languageSelected + "]").prop('checked', true);
                 }
                 if (localStorage.learningMode !== null) {
                     $("#slider-flip-learn").val(localStorage.learningMode).slider('refresh');
@@ -228,9 +240,7 @@ var app = {
             }
         });
 
-    },
-    buildPurushaSuktas: function (parentElementDiv) {
-
+    }, buildPurushaSuktas: function (parentElementDiv) {
         var shlokaListEng = puruSecName2ShlokasEng["Purusha Sukta"];
         var shlokaListKan = puruSecName2ShlokasKan["Purusha Sukta"];
         var shlokaListSan = puruSecName2ShlokasSan["Purusha Sukta"];
@@ -309,13 +319,13 @@ var app = {
 
             shlokaContent += "<h3>" + 'Shloka ' + (shlokaEng["num"] === '0' ? "Dhyanam" : shlokaEng["num"]) + "</h3>";
             shlokaContent += "<p>" + shlokaTextEng.replace(/\n/g, '<br/>') + "</p>";
-            
+
             if (localStorage.languageSelected === 'kannada')
                 shlokaContent += "<p>" + shlokaTextKan.replace(/\n/g, '<br/>') + "</p>";
 
             if (localStorage.languageSelected === 'sanskrit')
                 shlokaContent += "<p>" + shlokaTextSan.replace(/\n/g, '<br/>') + "</p>";
-            
+
             shlokaContent += "<a href='#' onclick='$.mobile.silentScroll(0)'>Back To Top</a>";
 
             shlokaContent += "</p>";
@@ -343,13 +353,13 @@ var app = {
             shlokaContent += "</fieldset>";
             shlokaContent += "<h3>" + 'Shloka ' + (shlokaEng["num"] === '0' ? "Dhyanam" : shlokaEng["num"]) + "</h3>";
             shlokaContent += "<p>" + shlokaTextEng.replace(/\n/g, '<br/>') + "</p>";
-            
+
             if (localStorage.languageSelected === 'kannada')
                 shlokaContent += "<p>" + shlokaTextKan.replace(/\n/g, '<br/>') + "</p>";
 
             if (localStorage.languageSelected === 'sanskrit')
                 shlokaContent += "<p>" + shlokaTextSan.replace(/\n/g, '<br/>') + "</p>";
-            
+
             for (var k = 0; k < notesList.length; k++) {
                 var notes = notesList[k];
                 var expTitle = notes["title"];
@@ -397,10 +407,8 @@ var app = {
             console.log('---------------------');
         }
     },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicity call 'app.receivedEvent(...);'
+    // deviceready Event Handler     //
+    // The scope of 'this' is the event. In order to call the 'receivedEvent'     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function () {
         app.receivedEvent('deviceready');
     },
@@ -414,7 +422,6 @@ var app = {
         console.log('Received Event: ' + id);
     }
 };
-
 function loading(showOrHide) {
     if (showOrHide === 'show') {
         $("body").addClass("loading");
