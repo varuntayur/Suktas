@@ -185,6 +185,33 @@ var app = {
             });
         });
 
+        $('#saveSettings').on("click", function () {
+            window.localStorage.setItem("learningMode", $("#slider-flip-learn").val());
+            window.localStorage.setItem("languageSelected", $('input[name=radio-choice-lang]:checked').val());
+
+            console.log('--Saved the settings--');
+            console.log('Language' + localStorage.languageSelected);
+            console.log(localStorage.learningMode);
+            console.log('----');
+        });
+
+        $("#popupSettings").bind({
+            popupbeforeposition: function (event, ui) {
+
+                if (localStorage.languageSelected !== null) {
+                    $("input[name=radio-choice-lang]").val([localStorage.languageSelected]);
+                }
+                if (localStorage.learningMode !== null) {
+                    $("#slider-flip-learn").val(localStorage.learningMode).slider('refresh');
+                }
+
+                console.log('--Displaying the saved settings--');
+                console.log(localStorage.languageSelected);
+                console.log(localStorage.learningMode);
+                console.log('----');
+            }
+        });
+
     },
     buildPurushaSuktas: function (parentElementDiv) {
 
@@ -204,7 +231,7 @@ var app = {
         sriSuktaCached = app.buildSuktaContent(shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
 
 
-        var headerSection = "<div data-role='header'><h1>Sri Sukta - Phala Shruthi</h1></div>";
+        var headerSection = "<div data-role='header'><h1>Phala Shruthi</h1></div>";
         $(parentElementDiv).append(headerSection);
         sriSuktaCached += headerSection;
 
