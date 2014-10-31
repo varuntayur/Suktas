@@ -190,8 +190,8 @@ var app = {
             window.localStorage.setItem("languageSelected", $('input[name=radio-choice-lang]:checked').val());
 
             console.log('--Saved the settings--');
-            console.log('Language' + localStorage.languageSelected);
-            console.log(localStorage.learningMode);
+            console.log('Language:' + localStorage.languageSelected);
+            console.log('Learning Mode:' + localStorage.learningMode);
             console.log('----');
         });
 
