@@ -1,18 +1,36 @@
 
+this.introSec2ShlokasEng = {};
+
 this.puruSecName2ShlokasEng = {};
 this.puruSecName2ShlokasKan = {};
 this.puruSecName2ShlokasSan = {};
+
+this.narayanaSecName2ShlokasEng = {};
+this.narayanaSecName2ShlokasKan = {};
+this.narayanaSecName2ShlokasSan = {};
+
+this.durgaSecName2ShlokasEng = {};
+this.durgaSecName2ShlokasKan = {};
+this.durgaSecName2ShlokasSan = {};
+
 this.sriSecName2ShlokasEng = {};
 this.sriSecName2ShlokasKan = {};
 this.sriSecName2ShlokasSan = {};
+
 this.my_media;
+
 this.purushaSuktaCached = null;
+this.introCached = null;
+this.narayanaSuktaCached = null;
+this.durgaSuktaCached = null;
 this.sriSuktaCached = null;
+
+
 var app = {
     initialize: function () {
         loading('show');
 
-        this.buildData();
+        this.loadData();
 
 
         this.bindEvents();
@@ -77,8 +95,24 @@ var app = {
             }
         });
     },
-    buildData: function () {
+    loadData: function () {
 
+        /* introduction   */
+        $.getJSON("data/introduction_eng.json", function (data) {
+            var sections = data["sections"];
+            console.log('No. of sections in introduction (Eng) :' + sections.length);
+            for (var i = 0; i < sections.length; i++)
+            {
+                var section = sections[i];
+                var secName = section["name"];
+                var shlokaList = section["shlokaList"];
+                console.log('Section :' + secName);
+                introSec2ShlokasEng[secName] = shlokaList;
+            }
+
+        });
+
+        /* purusha sukta   */
         $.getJSON("data/purusha_eng.json", function (data) {
             var sections = data["sections"];
             console.log('No. of sections in Purusha Sukta (Eng) :' + sections.length);
@@ -120,6 +154,8 @@ var app = {
             }
 
         });
+
+        /* sri sukta   */
         $.getJSON("data/srisukta_eng.json", function (data) {
             var sections = data["sections"];
             console.log('No. of sections in Sri Sukta (Eng)  :' + sections.length);
@@ -162,8 +198,93 @@ var app = {
 
         });
 
+        /* narayana sukta   */
+        $.getJSON("data/narayana_eng.json", function (data) {
+            var sections = data["sections"];
+            console.log('No. of sections in Narayana Sukta (Eng) :' + sections.length);
+            for (var i = 0; i < sections.length; i++)
+            {
+                var section = sections[i];
+                var secName = section["name"];
+                var shlokaList = section["shlokaList"];
+                console.log('Section :' + secName);
+                narayanaSecName2ShlokasEng[secName] = shlokaList;
+            }
+
+        });
+        $.getJSON("data/narayana_kan.json", function (data) {
+            var items = [];
+            var sections = data["sections"];
+            console.log('No. of sections in narayana Sukta (Kan)  :' + sections.length);
+            for (var i = 0; i < sections.length; i++)
+            {
+                var section = sections[i];
+                var secName = section["name"];
+                var shlokaList = section["shlokaList"];
+                console.log('Section :' + secName);
+                narayanaSecName2ShlokasKan[secName] = shlokaList;
+            }
+
+        });
+        $.getJSON("data/narayana_san.json", function (data) {
+            var items = [];
+            var sections = data["sections"];
+            console.log('No. of sections in narayana Sukta (San) :' + sections.length);
+            for (var i = 0; i < sections.length; i++)
+            {
+                var section = sections[i];
+                var secName = section["name"];
+                var shlokaList = section["shlokaList"];
+                console.log('Section :' + secName);
+                narayanaSecName2ShlokasSan[secName] = shlokaList;
+            }
+
+        });
+
+        /* durga sukta   */
+        $.getJSON("data/durga_eng.json", function (data) {
+            var sections = data["sections"];
+            console.log('No. of sections in durga Sukta (Eng) :' + sections.length);
+            for (var i = 0; i < sections.length; i++)
+            {
+                var section = sections[i];
+                var secName = section["name"];
+                var shlokaList = section["shlokaList"];
+                console.log('Section :' + secName);
+                durgaSecName2ShlokasEng[secName] = shlokaList;
+            }
+
+        });
+        $.getJSON("data/durga_kan.json", function (data) {
+            var items = [];
+            var sections = data["sections"];
+            console.log('No. of sections in durga Sukta (Kan)  :' + sections.length);
+            for (var i = 0; i < sections.length; i++)
+            {
+                var section = sections[i];
+                var secName = section["name"];
+                var shlokaList = section["shlokaList"];
+                console.log('Section :' + secName);
+                durgaSecName2ShlokasKan[secName] = shlokaList;
+            }
+
+        });
+        $.getJSON("data/durga_san.json", function (data) {
+            var items = [];
+            var sections = data["sections"];
+            console.log('No. of sections in durga Sukta (San) :' + sections.length);
+            for (var i = 0; i < sections.length; i++)
+            {
+                var section = sections[i];
+                var secName = section["name"];
+                var shlokaList = section["shlokaList"];
+                console.log('Section :' + secName);
+                durgaSecName2ShlokasSan[secName] = shlokaList;
+            }
+
+        });
+
     },
-    
     setDefaultSettings: function () {
         if (localStorage.languageSelected === undefined) {
 
@@ -202,6 +323,20 @@ var app = {
     },
     loadIntroduction: function () {
         $.mobile.navigate("#introduction");
+
+        var parentElementDiv = '#listviewIntro';
+        if (introCached !== null) {
+            console.log("intro, loading cached contents");
+            $(parentElementDiv).append(introCached);
+            $('[data-role="collapsible"]').parent().enhanceWithin();
+            return;
+        }
+
+        // shlokas to be displayed in one page
+        console.log("intro, building the contents with learning mode off");
+        introCached = app.buildIntroPage(parentElementDiv);
+
+        loading('hide');
     },
     loadNarayanaSuktas: function () {
         $.mobile.navigate("#narayanaSukta");
@@ -229,6 +364,18 @@ var app = {
             app.buildPurushaSuktas(parentElementDiv, 'on');
         }
         loading('hide');
+    },
+    buildIntroPage: function (parentElementDiv) {
+
+        var secNum = 1;
+        for (var key in introSec2ShlokasEng) {
+            console.log('Building intro for section:' + key);
+//            var headerSection = "<div data-role='header'><h1>" + key + "</h1></div>";
+//            $(parentElementDiv).append(headerSection);
+            var shlokaListEng = introSec2ShlokasEng[key];
+            introCached = app.buildIntroContent(shlokaListEng, parentElementDiv);
+            secNum++;
+        }
     },
     buildPurushaSuktas: function (parentElementDiv) {
 
@@ -338,6 +485,32 @@ var app = {
         }
         return shlokaContentPrelude + shlokaContent;
     },
+    buildIntroContent: function (engList, parentElementDiv) {
+
+        for (var shlokaNum = 0; shlokaNum < engList.length; shlokaNum++) {
+
+            var shlokaEng = engList[shlokaNum];
+            var shlokaTextEng = shlokaEng["text"];
+            var shlokaEngExp = shlokaEng["explanation"];
+            var notesList = shlokaEngExp["notesList"];
+
+            var shlokaContent = "<p>" + shlokaTextEng.replace(/\n/g, '<br/>') + "</p>";
+            $(parentElementDiv).append(shlokaContent);
+
+            var iterShlokaContent = "";
+            for (var k = 0; k < notesList.length; k++) {
+                var notes = notesList[k];
+                var expTitle = notes["title"];
+                var expText = notes["text"];
+                iterShlokaContent += "<p><b>" + expTitle + "</b></p>";
+                iterShlokaContent += "<p>" + expText.replace(/\n/g, '<br/>') + "</p>";
+                iterShlokaContent += "<a href='#' onclick='$.mobile.silentScroll(0)'>Back To Top</a>";
+            }
+            $(parentElementDiv).append(iterShlokaContent);
+        }
+        $('[data-role="collapsible"]').parent().enhanceWithin();
+        return shlokaContent + iterShlokaContent;
+    },
     buildSuktaContent: function (type, secNum, engList, sanList, kanList, parentElementDiv) {
 
         for (var shlokaNum = 0; shlokaNum < engList.length; shlokaNum++) {
@@ -350,12 +523,14 @@ var app = {
             var shlokaTextSan = shlokaSan["text"];
             var shlokaEngExp = shlokaEng["explanation"];
             var notesList = shlokaEngExp["notesList"];
-            var shlokaContent = "<div data-role='collapsible' data-theme='b'>";
-            shlokaContent += "<fieldset class='ui-grid-e center'>";
-            shlokaContent += "<div class='ui-block-b'><button class='ui-btn ui-icon-delete ui-btn-icon-left'>Stop</button></div>";
-            var audioFile = "audio/" + type + secNum + "_" + shlokaNum + ".aac";
-            shlokaContent += "<div class='ui-block-c'><button class='ui-btn ui-icon-audio ui-btn-icon-left' onclick=\"playAudio('" + audioFile + "')\">Play</button></div>";
-            shlokaContent += "</fieldset>";
+            if (type !== null) {
+                var shlokaContent = "<div data-role='collapsible' data-theme='b'>";
+                shlokaContent += "<fieldset class='ui-grid-e center'>";
+                shlokaContent += "<div class='ui-block-b'><button class='ui-btn ui-icon-delete ui-btn-icon-left'>Stop</button></div>";
+                var audioFile = "audio/" + type + secNum + "_" + shlokaNum + ".aac";
+                shlokaContent += "<div class='ui-block-c'><button class='ui-btn ui-icon-audio ui-btn-icon-left' onclick=\"playAudio('" + audioFile + "')\">Play</button></div>";
+                shlokaContent += "</fieldset>";
+            }
             shlokaContent += "<h3>" + 'Shloka ' + (shlokaEng["num"] === '0' ? "Dhyanam" : shlokaEng["num"]) + "</h3>";
             shlokaContent += "<p>" + shlokaTextEng.replace(/\n/g, '<br/>') + "</p>";
             if (localStorage.languageSelected === 'kannada')
