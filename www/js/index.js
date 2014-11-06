@@ -556,7 +556,7 @@ var app = {
     buildSuktaContentInOnePage: function (engList, sanList, kanList, parentElementDiv) {
 
         var shlokaContentPrelude = "<fieldset class='ui-grid-e center'>";
-        shlokaContentPrelude += "<div class='ui-block-b'><button class='ui-btn ui-icon-delete ui-btn-icon-left'>Stop</button></div>";
+        shlokaContentPrelude += "<div class='ui-block-b'><button class='ui-btn ui-icon-delete ui-btn-icon-left' onclick=\"stopAudio()\">Stop</button></div>";
         shlokaContentPrelude += "<div class='ui-block-c'><button class='ui-btn ui-icon-audio ui-btn-icon-left' onclick=\"playAudio('audio/purushasukta0.aac')\">Play</button></div>";
         shlokaContentPrelude += "</fieldset>";
         $(parentElementDiv).append(shlokaContentPrelude);
@@ -623,7 +623,7 @@ var app = {
             if (type !== null) {
                 var shlokaContent = "<div data-role='collapsible' data-theme='b'>";
                 shlokaContent += "<fieldset class='ui-grid-e center'>";
-                shlokaContent += "<div class='ui-block-b'><button class='ui-btn ui-icon-delete ui-btn-icon-left'>Stop</button></div>";
+                shlokaContent += "<div class='ui-block-b'><button class='ui-btn ui-icon-delete ui-btn-icon-left' onclick=\"stopAudio()\">Stop</button></div>";
                 var audioFile = "audio/" + type + secNum + "_" + shlokaNum + ".aac";
                 shlokaContent += "<div class='ui-block-c'><button class='ui-btn ui-icon-audio ui-btn-icon-left' onclick=\"playAudio('" + audioFile + "')\">Play</button></div>";
                 shlokaContent += "</fieldset>";
