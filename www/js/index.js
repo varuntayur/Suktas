@@ -213,7 +213,6 @@ var app = {
 
         });
         $.getJSON("data/narayana_kan.json", function (data) {
-            var items = [];
             var sections = data["sections"];
             console.log('No. of sections in narayana Sukta (Kan)  :' + sections.length);
             for (var i = 0; i < sections.length; i++)
@@ -227,7 +226,6 @@ var app = {
 
         });
         $.getJSON("data/narayana_san.json", function (data) {
-            var items = [];
             var sections = data["sections"];
             console.log('No. of sections in narayana Sukta (San) :' + sections.length);
             for (var i = 0; i < sections.length; i++)
@@ -256,7 +254,6 @@ var app = {
 
         });
         $.getJSON("data/durga_kan.json", function (data) {
-            var items = [];
             var sections = data["sections"];
             console.log('No. of sections in durga Sukta (Kan)  :' + sections.length);
             for (var i = 0; i < sections.length; i++)
@@ -270,7 +267,6 @@ var app = {
 
         });
         $.getJSON("data/durga_san.json", function (data) {
-            var items = [];
             var sections = data["sections"];
             console.log('No. of sections in durga Sukta (San) :' + sections.length);
             for (var i = 0; i < sections.length; i++)
@@ -304,10 +300,16 @@ var app = {
         console.log('Language:' + localStorage.languageSelected);
         console.log('Learning Mode:' + localStorage.learningMode);
         console.log('----');
+
         purushaSuktaCached = null;
         sriSuktaCached = null;
+        narayanaSuktaCached = null;
+        durgaSuktaCached = null;
+
         $("#listviewPurusha").empty();
         $("#listviewSrisukta").empty();
+        $("#listviewNarayana").empty();
+        $("#listviewDurgaSukta").empty();
     },
     collapseAll: function () {
         $('[data-role="collapsible"]').each(function () {
@@ -339,11 +341,49 @@ var app = {
         loading('hide');
     },
     loadNarayanaSuktas: function () {
-        $.mobile.navigate("#narayanaSukta");
+        $.mobile.navigate("#narayanasukta");
+
+        var parentElementDiv = '#listviewNarayana';
+        if (narayanaSuktaCached !== null) {
+            console.log("Narayana Sukta, loading cached contents");
+            $(parentElementDiv).append(narayanaSuktaCached);
+            $('[data-role="collapsible"]').parent().enhanceWithin();
+            return;
+        }
+
+        // shlokas to be displayed in one page
+        if (localStorage.learningMode === 'off') {
+            console.log("narayana-sukta, building the contents with learning mode off");
+            app.buildNarayanaSuktasInSinglePage(parentElementDiv);
+        }
+        else {
+            console.log("narayana-sukta, building the contents");
+            app.buildNarayanaSuktas(parentElementDiv, 'on');
+        }
+        loading('hide');
     },
     loadDurgaSuktas: function () {
         $.mobile.navigate("#durgaSukta");
-    },
+
+        var parentElementDiv = '#listviewDurgaSukta';
+        if (durgaSuktaCached !== null) {
+            console.log("Durga Sukta, loading cached contents");
+            $(parentElementDiv).append(durgaSuktaCached);
+            $('[data-role="collapsible"]').parent().enhanceWithin();
+            return;
+        }
+
+        // shlokas to be displayed in one page
+        if (localStorage.learningMode === 'off') {
+            console.log("durga-sukta, building the contents with learning mode off");
+            app.buildDurgaSuktasInSinglePage(parentElementDiv);
+        }
+        else {
+            console.log("durga-sukta, building the contents");
+            app.buildDurgaSuktas(parentElementDiv);
+        }
+        loading('hide');
+    },       
     loadPurushaSuktas: function () {
         $.mobile.navigate("#purushaSukta");
         var parentElementDiv = '#listviewPurusha';
@@ -364,14 +404,35 @@ var app = {
             app.buildPurushaSuktas(parentElementDiv, 'on');
         }
         loading('hide');
+    },    
+    loadSriSuktas: function () {
+
+        $.mobile.navigate("#sriSukta");
+        var parentElementDiv = '#listviewSrisukta';
+        if (sriSuktaCached !== null) {
+            console.log("loading cached contents for srisukta");
+            $(parentElementDiv).append(sriSuktaCached);
+            $('[data-role="collapsible"]').parent().enhanceWithin();
+            return;
+        }
+
+        // shlokas to be displayed in one page
+        if (localStorage.learningMode === 'off') {
+            console.log("sri-sukta, building the contents with learning mode off");
+            app.buildSriSuktasInSinglePage(parentElementDiv);
+        }
+        else {
+            console.log("sri-sukta : building the contents");
+            app.buildSriSuktas(parentElementDiv);
+        }
+
     },
+    
     buildIntroPage: function (parentElementDiv) {
 
         var secNum = 1;
         for (var key in introSec2ShlokasEng) {
             console.log('Building intro for section:' + key);
-//            var headerSection = "<div data-role='header'><h1>" + key + "</h1></div>";
-//            $(parentElementDiv).append(headerSection);
             var shlokaListEng = introSec2ShlokasEng[key];
             introCached = app.buildIntroContent(shlokaListEng, parentElementDiv);
             secNum++;
@@ -401,32 +462,66 @@ var app = {
             var shlokaListEng = puruSecName2ShlokasEng[key];
             var shlokaListKan = puruSecName2ShlokasKan[key];
             var shlokaListSan = puruSecName2ShlokasSan[key];
-            purushaSuktaCached = app.buildSuktaContentInOnePage('purushasukta', secNum, shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
+            purushaSuktaCached = app.buildSuktaContentInOnePage(shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
             secNum++;
         }
     },
-    loadSriSuktas: function () {
+    buildNarayanaSuktas: function (parentElementDiv) {
 
-        $.mobile.navigate("#sriSukta");
-        var parentElementDiv = '#listviewSrisukta';
-        if (sriSuktaCached !== null) {
-            console.log("loading cached contents for srisukta");
-            $(parentElementDiv).append(sriSuktaCached);
-            $('[data-role="collapsible"]').parent().enhanceWithin();
-            return;
+        var secNum = 1;
+        for (var key in narayanaSecName2ShlokasEng) {
+            console.log('Building narayana-sukta for section:' + key);
+            var headerSection = "<div data-role='header'><h1>" + key + "</h1></div>";
+            $(parentElementDiv).append(headerSection);
+            var shlokaListEng = narayanaSecName2ShlokasEng[key];
+            var shlokaListKan = narayanaSecName2ShlokasKan[key];
+            var shlokaListSan = narayanaSecName2ShlokasSan[key];
+            narayanaSuktaCached = app.buildSuktaContent('narayanasukta', secNum, shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
+            secNum++;
         }
-
-        // shlokas to be displayed in one page
-        if (localStorage.learningMode === 'off') {
-            console.log("sri-sukta, building the contents with learning mode off");
-            app.buildSriSuktasInSinglePage(parentElementDiv);
-        }
-        else {
-            console.log("sri-sukta : building the contents");
-            app.buildSriSuktas(parentElementDiv);
-        }
-
     },
+    buildNarayanaSuktasInSinglePage: function (parentElementDiv) {
+
+        var secNum = 1;
+        for (var key in narayanaSecName2ShlokasEng) {
+            console.log('Building narayana-sukta for section:' + key);
+            var headerSection = "<div data-role='header'><h1>" + key + "</h1></div>";
+            $(parentElementDiv).append(headerSection);
+            var shlokaListEng = narayanaSecName2ShlokasEng[key];
+            var shlokaListKan = narayanaSecName2ShlokasKan[key];
+            var shlokaListSan = narayanaSecName2ShlokasSan[key];
+            narayanaSuktaCached = app.buildSuktaContentInOnePage(shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
+            secNum++;
+        }
+    },
+    buildDurgaSuktas: function (parentElementDiv) {
+
+        var secNum = 1;
+        for (var key in durgaSecName2ShlokasEng) {
+            console.log('Building durga-sukta for section:' + key);
+            var headerSection = "<div data-role='header'><h1>" + key + "</h1></div>";
+            $(parentElementDiv).append(headerSection);
+            var shlokaListEng = durgaSecName2ShlokasEng[key];
+            var shlokaListKan = durgaSecName2ShlokasKan[key];
+            var shlokaListSan = durgaSecName2ShlokasSan[key];
+            durgaSuktaCached = app.buildSuktaContent('durgasukta', secNum, shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
+            secNum++;
+        }
+    },
+    buildDurgaSuktasInSinglePage: function (parentElementDiv) {
+
+        var secNum = 1;
+        for (var key in durgaSecName2ShlokasEng) {
+            console.log('Building durga-sukta for section:' + key);
+            var headerSection = "<div data-role='header'><h1>" + key + "</h1></div>";
+            $(parentElementDiv).append(headerSection);
+            var shlokaListEng = durgaSecName2ShlokasEng[key];
+            var shlokaListKan = durgaSecName2ShlokasKan[key];
+            var shlokaListSan = durgaSecName2ShlokasSan[key];
+            durgaSuktaCached = app.buildSuktaContentInOnePage(shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
+            secNum++;
+        }
+    },    
     buildSriSuktas: function (parentElementDiv) {
 
         var secNum = 1;
@@ -452,12 +547,13 @@ var app = {
             var shlokaListEng = sriSecName2ShlokasEng[key];
             var shlokaListKan = sriSecName2ShlokasKan[key];
             var shlokaListSan = sriSecName2ShlokasSan[key];
-            sriSuktaCached = app.buildSuktaContentInOnePage('srisukta', secNum, shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
+            sriSuktaCached = app.buildSuktaContentInOnePage(shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
             secNum++;
         }
 
     },
-    buildSuktaContentInOnePage: function (type, engList, sanList, kanList, parentElementDiv) {
+    
+    buildSuktaContentInOnePage: function (engList, sanList, kanList, parentElementDiv) {
 
         var shlokaContentPrelude = "<fieldset class='ui-grid-e center'>";
         shlokaContentPrelude += "<div class='ui-block-b'><button class='ui-btn ui-icon-delete ui-btn-icon-left'>Stop</button></div>";
@@ -481,9 +577,10 @@ var app = {
                 shlokaContent += "<p>" + shlokaTextSan.replace(/\n/g, '<br/>') + "</p>";
             shlokaContent += "<a href='#' onclick='$.mobile.silentScroll(0)'>Back To Top</a>";
             shlokaContent += "</p>";
+            shlokaContentPrelude += shlokaContent;
             $(parentElementDiv).append(shlokaContent);
         }
-        return shlokaContentPrelude + shlokaContent;
+        return shlokaContentPrelude;
     },
     buildIntroContent: function (engList, parentElementDiv) {
 
@@ -550,6 +647,7 @@ var app = {
         $('[data-role="collapsible"]').parent().enhanceWithin();
         return shlokaContent;
     },
+    
     onDeviceReady: function () {
         app.receivedEvent('deviceready');
     },
