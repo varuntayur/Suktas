@@ -383,7 +383,7 @@ var app = {
             app.buildDurgaSuktas(parentElementDiv);
         }
         loading('hide');
-    },       
+    },
     loadPurushaSuktas: function () {
         $.mobile.navigate("#purushaSukta");
         var parentElementDiv = '#listviewPurusha';
@@ -404,7 +404,7 @@ var app = {
             app.buildPurushaSuktas(parentElementDiv, 'on');
         }
         loading('hide');
-    },    
+    },
     loadSriSuktas: function () {
 
         $.mobile.navigate("#sriSukta");
@@ -427,7 +427,6 @@ var app = {
         }
 
     },
-    
     buildIntroPage: function (parentElementDiv) {
 
         var secNum = 1;
@@ -521,7 +520,7 @@ var app = {
             durgaSuktaCached = app.buildSuktaContentInOnePage(shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
             secNum++;
         }
-    },    
+    },
     buildSriSuktas: function (parentElementDiv) {
 
         var secNum = 1;
@@ -552,7 +551,6 @@ var app = {
         }
 
     },
-    
     buildSuktaContentInOnePage: function (engList, sanList, kanList, parentElementDiv) {
 
         var shlokaContentPrelude = "<fieldset class='ui-grid-e center'>";
@@ -647,7 +645,6 @@ var app = {
         $('[data-role="collapsible"]').parent().enhanceWithin();
         return shlokaContent;
     },
-    
     onDeviceReady: function () {
         app.receivedEvent('deviceready');
     },
@@ -671,6 +668,9 @@ function loading(showOrHide) {
 //
 function playAudio(src) {
 
+    if (this.my_media !== null)
+        stopAudio();
+
     var path = window.location.pathname;
     path = path.substr(path, path.length - 10);
     // Create Media object from src
@@ -679,32 +679,22 @@ function playAudio(src) {
     this.my_media.play();
 }
 
-// Pause audio
-// 
-function pauseAudio() {
-    if (this.my_media) {
-        this.my_media.pause();
-    }
-}
-
-// Stop audio
-// 
 function stopAudio() {
     if (this.my_media) {
         this.my_media.stop();
+        this.my_media = null;
     }
 }
 
-// onSuccess Callback
-//
 function onSuccess() {
     console.log("playAudio():Audio Success");
+    this.my_media = null;
 }
 
 // onError Callback 
 //
 function onError(error) {
-    alert('code: ' + error.code + '\n' +
+    alert('Encountered an error trying to play the sound track. Details: code: ' + error.code + '\n' +
             'message: ' + error.message + '\n');
 }
 
