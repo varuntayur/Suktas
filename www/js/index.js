@@ -1,38 +1,81 @@
 
 this.introSec2ShlokasEng = {};
-
 this.puruSecName2ShlokasEng = {};
 this.puruSecName2ShlokasKan = {};
 this.puruSecName2ShlokasSan = {};
-
 this.narayanaSecName2ShlokasEng = {};
 this.narayanaSecName2ShlokasKan = {};
 this.narayanaSecName2ShlokasSan = {};
-
 this.durgaSecName2ShlokasEng = {};
 this.durgaSecName2ShlokasKan = {};
 this.durgaSecName2ShlokasSan = {};
-
 this.sriSecName2ShlokasEng = {};
 this.sriSecName2ShlokasKan = {};
 this.sriSecName2ShlokasSan = {};
-
 this.my_media;
-
 this.purushaSuktaCached = null;
 this.introCached = null;
 this.narayanaSuktaCached = null;
 this.durgaSuktaCached = null;
 this.sriSuktaCached = null;
 
+this.isManualStop = false;
+this.forceAudioPlayStop = false;
+this.mediaIndex = 0;
+this.audioPlayType = null;
+this.sukta2ShlokaMediaList = {};
+
+this.durgaSuktasMediaList = ["durgasukta1_0.aac", "durgasukta1_1.aac",
+    "durgasukta1_2.aac", "durgasukta1_3.aac",
+    "durgasukta1_4.aac", "durgasukta1_5.aac",
+    "durgasukta1_6.aac", "durgasukta1_7.aac"];
+
+this.narayanaSuktasMediaList = ["narayanasukta1_0.aac",
+    "narayanasukta1_1.aac", "narayanasukta1_2.aac",
+    "narayanasukta1_3.aac", "narayanasukta1_4.aac",
+    "narayanasukta1_5.aac", "narayanasukta1_6.aac",
+    "narayanasukta1_7.aac", "narayanasukta1_8.aac",
+    "narayanasukta1_9.aac", "narayanasukta1_10.aac",
+    "narayanasukta1_11.aac", "narayanasukta1_12.aac",
+    "narayanasukta1_13.aac"];
+
+this.purushaSuktasMediaList = ["purushasukta1_0.aac",
+    "purushasukta1_1.aac", "purushasukta1_2.aac",
+    "purushasukta1_3.aac", "purushasukta1_4.aac",
+    "purushasukta1_5.aac", "purushasukta1_6.aac",
+    "purushasukta1_7.aac", "purushasukta1_8.aac",
+    "purushasukta1_9.aac", "purushasukta1_10.aac",
+    "purushasukta1_11.aac", "purushasukta1_12.aac",
+    "purushasukta1_13.aac", "purushasukta1_14.aac",
+    "purushasukta1_15.aac", "purushasukta1_16.aac",
+    "purushasukta1_17.aac", "purushasukta1_18.aac",
+    "purushasukta1_19.aac", "purushasukta1_20.aac",
+    "purushasukta1_21.aac", "purushasukta1_22.aac",
+    "purushasukta1_23.aac", "purushasukta1_24.aac",
+    "purushasukta1_25.aac"];
+
+this.sriSuktasMediaList = ["srisukta1_0.aac",
+    "srisukta1_1.aac", "srisukta1_2.aac",
+    "srisukta1_3.aac", "srisukta1_4.aac",
+    "srisukta1_5.aac", "srisukta1_6.aac",
+    "srisukta1_7.aac", "srisukta1_8.aac",
+    "srisukta1_9.aac", "srisukta1_10.aac",
+    "srisukta1_11.aac", "srisukta1_12.aac",
+    "srisukta1_13.aac", "srisukta1_14.aac",
+    "srisukta2_0.aac", "srisukta2_1.aac",
+    "srisukta2_2.aac", "srisukta2_3.aac",
+    "srisukta2_4.aac", "srisukta2_5.aac",
+    "srisukta2_6.aac", "srisukta2_7.aac",
+    "srisukta2_8.aac", "srisukta2_9.aac",
+    "srisukta2_10.aac", "srisukta2_11.aac",
+    "srisukta2_12.aac", "srisukta2_13.aac",
+    "srisukta2_14.aac", "srisukta2_15.aac",
+    "srisukta2_16.aac"];
 
 var app = {
     initialize: function () {
         loading('show');
-
         this.loadData();
-
-
         this.bindEvents();
         loading('hide');
     },
@@ -77,7 +120,6 @@ var app = {
         $('collapserDurga').on('click', this.collapseAll);
         $('expanderDurga').on('click', this.collapseAll);
         $('#saveSettings').on("click", this.saveSettings);
-
         $("#popupSettings").bind({
             popupbeforeposition: function (event, ui) {
 
@@ -111,7 +153,6 @@ var app = {
             }
 
         });
-
         /* purusha sukta   */
         $.getJSON("data/purusha_eng.json", function (data) {
             var sections = data["sections"];
@@ -127,7 +168,6 @@ var app = {
 
         });
         $.getJSON("data/purusha_kan.json", function (data) {
-            var items = [];
             var sections = data["sections"];
             console.log('No. of sections in Purusha Sukta (Kan)  :' + sections.length);
             for (var i = 0; i < sections.length; i++)
@@ -141,7 +181,6 @@ var app = {
 
         });
         $.getJSON("data/purusha_san.json", function (data) {
-            var items = [];
             var sections = data["sections"];
             console.log('No. of sections in Purusha Sukta (San) :' + sections.length);
             for (var i = 0; i < sections.length; i++)
@@ -154,7 +193,6 @@ var app = {
             }
 
         });
-
         /* sri sukta   */
         $.getJSON("data/srisukta_eng.json", function (data) {
             var sections = data["sections"];
@@ -170,7 +208,6 @@ var app = {
 
         });
         $.getJSON("data/srisukta_kan.json", function (data) {
-            var items = [];
             var sections = data["sections"];
             console.log('No. of sections in Sri Sukta (Kan)  :' + sections.length);
             for (var i = 0; i < sections.length; i++)
@@ -184,7 +221,6 @@ var app = {
 
         });
         $.getJSON("data/srisukta_san.json", function (data) {
-            var items = [];
             var sections = data["sections"];
             console.log('No. of sections in Sri Sukta (San):' + sections.length);
             for (var i = 0; i < sections.length; i++)
@@ -197,7 +233,6 @@ var app = {
             }
 
         });
-
         /* narayana sukta   */
         $.getJSON("data/narayana_eng.json", function (data) {
             var sections = data["sections"];
@@ -238,7 +273,6 @@ var app = {
             }
 
         });
-
         /* durga sukta   */
         $.getJSON("data/durga_eng.json", function (data) {
             var sections = data["sections"];
@@ -280,6 +314,13 @@ var app = {
 
         });
 
+        sukta2ShlokaMediaList["durgasukta"] = durgaSuktasMediaList;
+
+        sukta2ShlokaMediaList["narayanasukta"] = narayanaSuktasMediaList;
+
+        sukta2ShlokaMediaList["purushasukta"] = purushaSuktasMediaList;
+
+        sukta2ShlokaMediaList["srisukta"] = sriSuktasMediaList;
     },
     setDefaultSettings: function () {
         if (localStorage.languageSelected === undefined) {
@@ -300,12 +341,10 @@ var app = {
         console.log('Language:' + localStorage.languageSelected);
         console.log('Learning Mode:' + localStorage.learningMode);
         console.log('----');
-
         purushaSuktaCached = null;
         sriSuktaCached = null;
         narayanaSuktaCached = null;
         durgaSuktaCached = null;
-
         $("#listviewPurusha").empty();
         $("#listviewSrisukta").empty();
         $("#listviewNarayana").empty();
@@ -325,7 +364,6 @@ var app = {
     },
     loadIntroduction: function () {
         $.mobile.navigate("#introduction");
-
         var parentElementDiv = '#listviewIntro';
         if (introCached !== null) {
             console.log("intro, loading cached contents");
@@ -337,12 +375,10 @@ var app = {
         // shlokas to be displayed in one page
         console.log("intro, building the contents with learning mode off");
         introCached = app.buildIntroPage(parentElementDiv);
-
         loading('hide');
     },
     loadNarayanaSuktas: function () {
         $.mobile.navigate("#narayanasukta");
-
         var parentElementDiv = '#listviewNarayana';
         if (narayanaSuktaCached !== null) {
             console.log("Narayana Sukta, loading cached contents");
@@ -364,7 +400,6 @@ var app = {
     },
     loadDurgaSuktas: function () {
         $.mobile.navigate("#durgaSukta");
-
         var parentElementDiv = '#listviewDurgaSukta';
         if (durgaSuktaCached !== null) {
             console.log("Durga Sukta, loading cached contents");
@@ -461,7 +496,7 @@ var app = {
             var shlokaListEng = puruSecName2ShlokasEng[key];
             var shlokaListKan = puruSecName2ShlokasKan[key];
             var shlokaListSan = puruSecName2ShlokasSan[key];
-            purushaSuktaCached = app.buildSuktaContentInOnePage(shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
+            purushaSuktaCached = app.buildSuktaContentInOnePage('purushasukta', shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
             secNum++;
         }
     },
@@ -489,7 +524,7 @@ var app = {
             var shlokaListEng = narayanaSecName2ShlokasEng[key];
             var shlokaListKan = narayanaSecName2ShlokasKan[key];
             var shlokaListSan = narayanaSecName2ShlokasSan[key];
-            narayanaSuktaCached = app.buildSuktaContentInOnePage(shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
+            narayanaSuktaCached = app.buildSuktaContentInOnePage('narayanasukta', shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
             secNum++;
         }
     },
@@ -517,7 +552,7 @@ var app = {
             var shlokaListEng = durgaSecName2ShlokasEng[key];
             var shlokaListKan = durgaSecName2ShlokasKan[key];
             var shlokaListSan = durgaSecName2ShlokasSan[key];
-            durgaSuktaCached = app.buildSuktaContentInOnePage(shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
+            durgaSuktaCached = app.buildSuktaContentInOnePage('durgasukta', shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
             secNum++;
         }
     },
@@ -546,16 +581,17 @@ var app = {
             var shlokaListEng = sriSecName2ShlokasEng[key];
             var shlokaListKan = sriSecName2ShlokasKan[key];
             var shlokaListSan = sriSecName2ShlokasSan[key];
-            sriSuktaCached = app.buildSuktaContentInOnePage(shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
+            sriSuktaCached = app.buildSuktaContentInOnePage('srisukta', shlokaListEng, shlokaListSan, shlokaListKan, parentElementDiv);
             secNum++;
         }
 
     },
-    buildSuktaContentInOnePage: function (engList, sanList, kanList, parentElementDiv) {
+    buildSuktaContentInOnePage: function (type, engList, sanList, kanList, parentElementDiv) {
 
+        audioPlayType = type;
         var shlokaContentPrelude = "<fieldset class='ui-grid-e center'>";
-        shlokaContentPrelude += "<div class='ui-block-b'><button class='ui-btn ui-icon-delete ui-btn-icon-left' onclick=\"stopAudio()\">Stop</button></div>";
-        shlokaContentPrelude += "<div class='ui-block-c'><button class='ui-btn ui-icon-audio ui-btn-icon-left' onclick=\"playAudio('audio/purushasukta0.aac')\">Play</button></div>";
+        shlokaContentPrelude += "<div class='ui-block-b'><button class='ui-btn ui-icon-delete ui-btn-icon-left' onclick=\"stopAudioLoop(" + true + ")\">Stop</button></div>";
+        shlokaContentPrelude += "<div class='ui-block-c'><button class='ui-btn ui-icon-audio ui-btn-icon-left' onclick=\"playAudioLoop()\">Play</button></div>";
         shlokaContentPrelude += "</fieldset>";
         $(parentElementDiv).append(shlokaContentPrelude);
         for (var shlokaNum = 0; shlokaNum < engList.length; shlokaNum++) {
@@ -588,10 +624,8 @@ var app = {
             var shlokaTextEng = shlokaEng["text"];
             var shlokaEngExp = shlokaEng["explanation"];
             var notesList = shlokaEngExp["notesList"];
-
             var shlokaContent = "<p>" + shlokaTextEng.replace(/\n/g, '<br/>') + "</p>";
             $(parentElementDiv).append(shlokaContent);
-
             var iterShlokaContent = "";
             for (var k = 0; k < notesList.length; k++) {
                 var notes = notesList[k];
@@ -670,7 +704,6 @@ function playAudio(src) {
 
     if (this.my_media !== null)
         stopAudio();
-
     var path = window.location.pathname;
     path = path.substr(path, path.length - 10);
     // Create Media object from src
@@ -679,11 +712,50 @@ function playAudio(src) {
     this.my_media.play();
 }
 
+function playAudioLoop() {
+
+    var mediaPlaylist = sukta2ShlokaMediaList[audioPlayType];
+
+    if (this.mediaIndex > (mediaPlaylist.length - 1)) {
+        console.log("playAudioLoop():Play Audio reached end of list." + this.mediaIndex + "/" + mediaPlayList.length);
+        return;
+    }
+    var curMediaItem = "audio/" + mediaPlaylist[this.mediaIndex++];
+
+    if (this.my_media !== null || this.my_media !== undefined) {
+        forceAudioPlayStop = true;
+        this.my_media.stop();
+        this.my_media = null;
+        console.log("stopAudio():Stop Audio Success");
+    }
+
+    var path = window.location.pathname;
+    path = path.substr(path, path.length - 10);
+    this.my_media = new Media('file://' + path + curMediaItem, onSuccessLoop, onErrorLoop, onStatus);
+    this.my_media.play();
+    console.log("playAudioLoop():Play Audio Success" + curMediaItem);
+}
+
+function stopAudioLoop(isManualStop) {
+    if (this.my_media) {
+        forceAudioPlayStop = Boolean(isManualStop);
+        this.my_media.stop();
+        this.my_media = null;
+        console.log("stopAudioLoop():Stop Audio Loop Success");
+    }
+}
+
 function stopAudio() {
     if (this.my_media) {
         this.my_media.stop();
         this.my_media = null;
+        console.log("stopAudio():Stop Audio Success");
     }
+}
+
+function onSuccessLoop() {
+    console.log("playAudioLoop():Audio Success");
+    this.my_media = null;
 }
 
 function onSuccess() {
@@ -691,10 +763,24 @@ function onSuccess() {
     this.my_media = null;
 }
 
-// onError Callback 
-//
-function onError(error) {
-    alert('Encountered an error trying to play the sound track. Details: code: ' + error.code + '\n' +
+function onErrorLoop(error) {
+    console.log('Encountered an error trying to play the sound track. Details: code: ' + error.code + '\n' +
             'message: ' + error.message + '\n');
 }
+
+function onError(error) {
+    console.log('Encountered an error trying to play the sound track. Details: code: ' + error.code + '\n' +
+            'message: ' + error.message + '\n');
+}
+function onStatus(status) {
+    if (status === Media.MEDIA_STOPPED) {
+        console.log("playAudio():Audio stop success, will begin next track");
+        if (forceAudioPlayStop) {
+            forceAudioPlayStop = false;
+            return;
+        }
+        playAudioLoop();
+    }
+}
+
 
