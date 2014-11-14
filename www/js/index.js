@@ -691,7 +691,7 @@ var app = {
         console.log('Back button pressed..');
         forceAudioPlayStop = true;
         stopAudio();
-        $.mobile.navigate( "#home" );
+        $.mobile.navigate("#home");
         return false;
     },
     receivedEvent: function (id) {
@@ -733,6 +733,7 @@ function playAudioLoop() {
     }
     var curMediaItem = "audio/" + mediaPlaylist[this.mediaIndex++];
     if (this.my_media) {
+        forceAudioPlayStop = true;
         this.my_media.stop();
         this.my_media = null;
         console.log("stopAudio():Stop Audio Success");
