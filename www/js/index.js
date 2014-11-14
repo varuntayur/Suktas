@@ -18,18 +18,15 @@ this.introCached = null;
 this.narayanaSuktaCached = null;
 this.durgaSuktaCached = null;
 this.sriSuktaCached = null;
-
 this.isManualStop = false;
 this.forceAudioPlayStop = false;
 this.mediaIndex = 0;
 this.audioPlayType = null;
 this.sukta2ShlokaMediaList = {};
-
 this.durgaSuktasMediaList = ["durgasukta1_0.aac", "durgasukta1_1.aac",
     "durgasukta1_2.aac", "durgasukta1_3.aac",
     "durgasukta1_4.aac", "durgasukta1_5.aac",
     "durgasukta1_6.aac", "durgasukta1_7.aac"];
-
 this.narayanaSuktasMediaList = ["narayanasukta1_0.aac",
     "narayanasukta1_1.aac", "narayanasukta1_2.aac",
     "narayanasukta1_3.aac", "narayanasukta1_4.aac",
@@ -38,7 +35,6 @@ this.narayanaSuktasMediaList = ["narayanasukta1_0.aac",
     "narayanasukta1_9.aac", "narayanasukta1_10.aac",
     "narayanasukta1_11.aac", "narayanasukta1_12.aac",
     "narayanasukta1_13.aac"];
-
 this.purushaSuktasMediaList = ["purushasukta1_0.aac",
     "purushasukta1_1.aac", "purushasukta1_2.aac",
     "purushasukta1_3.aac", "purushasukta1_4.aac",
@@ -53,7 +49,6 @@ this.purushaSuktasMediaList = ["purushasukta1_0.aac",
     "purushasukta1_21.aac", "purushasukta1_22.aac",
     "purushasukta1_23.aac", "purushasukta1_24.aac",
     "purushasukta1_25.aac"];
-
 this.sriSuktasMediaList = ["srisukta1_0.aac",
     "srisukta1_1.aac", "srisukta1_2.aac",
     "srisukta1_3.aac", "srisukta1_4.aac",
@@ -71,7 +66,6 @@ this.sriSuktasMediaList = ["srisukta1_0.aac",
     "srisukta2_12.aac", "srisukta2_13.aac",
     "srisukta2_14.aac", "srisukta2_15.aac",
     "srisukta2_16.aac"];
-
 var app = {
     initialize: function () {
         loading('show');
@@ -81,6 +75,7 @@ var app = {
     },
     bindEvents: function () {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        document.addEventListener('backbutton', this.backButtonCallback, false);
         $('#listviewMainMenu').on('click', 'li', function () {
             var selected_index = $(this).index();
             if (selected_index > 0) {
@@ -88,6 +83,8 @@ var app = {
                 loading('show');
                 var listIndex = "li." + selected_index;
                 var menuName = $('#listviewMainMenu').children(listIndex).text().trim();
+                mediaIndex = 0;
+                forceAudioPlayStop = false;
                 switch (menuName) {
 
                     case "Introduction":
@@ -134,6 +131,17 @@ var app = {
                 console.log(localStorage.languageSelected);
                 console.log(localStorage.learningMode);
                 console.log('----');
+            }
+        });
+        $(window).on("navigate", function (event, data) {
+            var direction = data.state.direction;
+            if (direction === 'back') {
+                console.log('Back button pressed');
+                this.stopAudio();
+            }
+            if (direction === 'forward') {
+                console.log('forward  button pressed');
+                this.stopAudio();
             }
         });
     },
@@ -313,14 +321,11 @@ var app = {
             }
 
         });
-
         sukta2ShlokaMediaList["durgasukta"] = durgaSuktasMediaList;
-
         sukta2ShlokaMediaList["narayanasukta"] = narayanaSuktasMediaList;
-
         sukta2ShlokaMediaList["purushasukta"] = purushaSuktasMediaList;
-
         sukta2ShlokaMediaList["srisukta"] = sriSuktasMediaList;
+        app.setDefaultSettings();
     },
     setDefaultSettings: function () {
         if (localStorage.languageSelected === undefined) {
@@ -682,6 +687,13 @@ var app = {
     onDeviceReady: function () {
         app.receivedEvent('deviceready');
     },
+    backButtonCallback: function () {
+        console.log('Back button pressed..');
+        forceAudioPlayStop = true;
+        stopAudio();
+        $.mobile.navigate( "#home" );
+        return false;
+    },
     receivedEvent: function (id) {
         var parentElement = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
@@ -715,15 +727,12 @@ function playAudio(src) {
 function playAudioLoop() {
 
     var mediaPlaylist = sukta2ShlokaMediaList[audioPlayType];
-
     if (this.mediaIndex > (mediaPlaylist.length - 1)) {
         console.log("playAudioLoop():Play Audio reached end of list." + this.mediaIndex + "/" + mediaPlayList.length);
         return;
     }
     var curMediaItem = "audio/" + mediaPlaylist[this.mediaIndex++];
-
-    if (this.my_media !== null || this.my_media !== undefined) {
-        forceAudioPlayStop = true;
+    if (this.my_media) {
         this.my_media.stop();
         this.my_media = null;
         console.log("stopAudio():Stop Audio Success");
