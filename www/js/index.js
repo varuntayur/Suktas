@@ -733,9 +733,7 @@ function playAudioLoop() {
     }
     var curMediaItem = "audio/" + mediaPlaylist[this.mediaIndex++];
     if (this.my_media) {
-        forceAudioPlayStop = true;
-        this.my_media.stop();
-        this.my_media = null;
+        this.stopAudio();
         console.log("stopAudio():Stop Audio Success");
     }
 
