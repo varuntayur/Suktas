@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.vtayur.Suktas" version="1.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.vtayur.Suktas" version="1.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" android-versionCode="101000">
     <name>Suktas</name>
     <description>Purusha Suktas, Narayana Suktas, Sri Suktas, Durga Suktas</description>
     <author email="varuntayur@gmail.com" href="varuntayur.wordpress.com">vtayur</author>
